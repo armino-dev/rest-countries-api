@@ -1,13 +1,11 @@
 import Head from 'next/head'
-import "../styles/style.scss"
 
 export default function Detail() {
     return (
       <div>
         <Head>
           <title>Frontend Mentor | REST Countries API with color theme switcher | Country detail</title>
-          <link rel="icon" href="/favicon.ico" />
-          <script src="https://kit.fontawesome.com/026dd295b1.js" crossOrigin="anonymous"></script>
+          <link rel="icon" href="/favicon.ico" />          
         </Head>
         <header>
           <h1></h1>
