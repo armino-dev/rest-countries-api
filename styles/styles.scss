@@ -89,15 +89,16 @@ $themes: (
 *::after {
     margin: 0;
     padding: 0;
-    box-sizing: inherit;
+    box-sizing: border-box;
 }
 html {
     height: 100%;
-    box-sizing: border-box;
 }
+
 body {
     display: flex;
     flex-direction: column;
+    width: 100%;
     min-height: 100vh;
     margin: 0;    
     font-family: "Nunito Sans", sans-serif;
@@ -109,7 +110,9 @@ body {
 }
 
 div#countryApp {
+    min-width: 375px;
     display: flex;
+    width: 100%;
     flex-direction: column;
     justify-content: space-between;
     min-height: 100vh;
