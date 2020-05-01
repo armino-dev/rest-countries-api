@@ -1,0 +1,332 @@
+/*
+The designs were created to the following widths:
+- Mobile: 375px
+- Desktop: 1440px
+## Colors
+### Neutral
+- Dark Blue (Dark Mode Elements): hsl(209, 23%, 22%)
+- Very Dark Blue (Dark Mode Background): hsl(207, 26%, 17%)
+- Very Dark Blue (Light Mode Text): hsl(200, 15%, 8%)
+- Dark Gray (Light Mode Input): hsl(0, 0%, 52%)
+- Very Light Gray (Light Mode Background): hsl(0, 0%, 98%)
+- White (Dark Mode Text & Light Mode Elements): hsl(0, 0%, 100%)
+## Typography
+### Body Copy
+- Homepage Items: 14px
+- Detail Page: 16px 
+### Fonts
+- Family: [Nunito Sans](https://fonts.google.com/specimen/Nunito+Sans)
+- Weights: 300, 600, 800
+## Icons
+For the icons, you can use a font icon library. 
+Don't worry if the icons that you choose don't look exactly like they do on the design.
+Some suggestions can be found below:
+- [Font Awesome](https://fontawesome.com)
+- [IcoMoon](https://icomoon.io)
+- [Ionicons](https://ionicons.com)
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap");
+@import url("https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+
+// colors
+$blue-dark: hsl(209, 23%, 22%);
+$blue-dark-one: hsl(207, 26%, 17%);
+$blue-dark-two: hsl(200, 15%, 8%);
+$gray-dark: hsl(0, 0%, 52%);
+$gray-very-light: hsl(0, 0%, 98%);
+$white: hsl(0, 0%, 100%);
+
+// other
+$default-font-size: 14px;
+$detail-font-size: 16px;
+
+$default-padding: 25px;
+$default-margin: $default-padding * 2;
+
+// themes support
+
+$themes: (
+    "light": (
+        "app-bg-color": $gray-very-light,
+        "app-text-color": $blue-dark-two,
+        "element-bg-color": $white,
+        "element-bg-hover": $gray-dark,
+    ),
+    "dark": (
+        "app-bg-color": $blue-dark-one,
+        "app-text-color": $white,
+        "element-bg-color": $blue-dark,
+        "element-bg-hover": $gray-dark,
+    ),
+);
+
+@mixin themed() {
+    @each $theme, $map in $themes {
+        .theme-#{$theme} & {
+            $theme-map: () !global;
+            @each $key, $submap in $map {
+                $value: map-get(map-get($themes, $theme), "#{$key}");
+                $theme-map: map-merge(
+                    $theme-map,
+                    (
+                        $key: $value,
+                    )
+                ) !global;
+            }
+            @content;
+            $theme-map: null !global;
+        }
+    }
+}
+
+@function theme($key) {
+    @return map-get($theme-map, $key);
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;    
+    font-family: "Nunito Sans", sans-serif;
+    font-size: $default-font-size;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+}
+
+div#countryApp {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    @include themed() {
+        background-color: theme("app-bg-color");
+    }    
+}
+
+a {
+    text-decoration: none;
+    padding: $default-padding;
+    @include themed() {
+        color: theme("app-text-color");
+    }
+}
+
+h1 {
+    padding: $default-padding;    
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 160px;
+    font-size: $default-font-size;
+    font-weight: 600;
+    @include themed() {
+        color: theme("app-text-color");
+        background-color: theme("element-bg-color");
+    }
+    //adjust later
+    box-shadow: 0 3px 10px 3px rgba(0, 0, 0, .2);
+    a{
+        font-size: 1.6em;        
+    }
+}
+
+.shadow {
+    box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, .1);
+}
+
+.input-container {
+    margin-top: $default-margin;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    width: 100%;
+    @include themed() {
+        color: theme("app-text-color");
+        background-color: theme("element-bg-color");                
+    }    
+    height: 96px;
+    padding-left: 150px;    
+    position: relative;
+    &.search {
+        &::before {
+            display: flex;
+            justify-content: center;            
+            align-items: center;
+            position: absolute;
+            content: "\f002";
+            font-size: 30px;
+            font-family: "FontAwesome";
+            width: 150px;
+            height: 96px;
+            top:0;
+            left: 0;
+        }
+    }    
+}
+
+input[type=text] {    
+    outline: none;
+    font-size: 1.6em;
+    @include themed() {
+        color: theme("app-text-color");
+        background: transparent;        
+        border: none;        
+    }                
+    &::placeholder {        
+        @include themed() {
+            color: theme("app-text-color");
+        }        
+    }
+}
+
+
+.dropdown {
+    margin-top: $default-margin;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    width: 100%;
+    outline: none;
+    font-size: 1.6em;
+    font-weight: 600;
+    @include themed() {
+        color: theme("app-text-color");
+        background-color: theme("element-bg-color");                
+    }    
+    height: 96px;
+    padding-left: $default-padding * 2;
+    position: relative;
+    .header {
+        width: 100%;        
+        position: relative;
+        display:flex;
+        align-items: center;               
+        .title {            
+            &:after{                             
+                position: absolute;
+                font-family: "FontAwesome";                
+                content: "\f105";
+                right: $default-padding;
+            }
+            &.open:after {
+                content: "\f107";
+            }
+        }        
+    }
+    .list {
+        display: flex;
+        padding: 20px 0;
+        width: 100%;
+        flex-direction: column;
+        z-index: 900;
+        position: absolute;
+        list-style-type: none;
+        top: 105px;
+        left: 0;
+        border-radius: 10px;        
+        @include themed() {            
+            background-color: theme("element-bg-color");                
+        } 
+        li {
+            padding: 10px $default-padding * 2;            
+        }
+    }
+}
+
+.w60 {
+    width: 60%;
+}
+
+.card {
+    margin-top: $default-margin;
+    max-width: 530px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;    
+    border-radius: 10px;
+    @include themed() {
+        background-color: theme("element-bg-color");
+        color: theme("app-text-color");
+    }
+    .thumbnail {
+        width: 100%;
+        height: 320px;
+        overflow: hidden;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        position: relative;
+        img {
+            position: absolute;
+            width: 100%;
+        }
+    }
+    .title {
+        font-size: 35px;
+        font-weight: 800;
+        padding: $default-padding;
+    }
+
+    .body {
+        font-size: 1.6em;
+        padding: 10px $default-padding $default-padding $default-padding;
+        ul {
+            list-style-type: none;
+            li {
+                padding: 10px 0;
+                .label {
+                    font-weight: 800;
+                }
+            }
+        }
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+main {
+    padding: 0 $default-padding;    
+    flex-grow: 1;
+}
+
+footer {
+    padding: $default-padding;
+}
+
+.attribution {
+    margin-top: 20px;
+    font-size: 11px;
+    text-align: center;
+    a {
+        color: hsl(228, 45%, 44%);
+        text-decoration: none;
+        font-weight: 700;
+        &:hover {
+            color: hsl(228, 12%, 44%);
+        }
+    }
+}
