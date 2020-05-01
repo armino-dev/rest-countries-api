@@ -23,7 +23,8 @@ function Home({ countries }) {
   return (
     <div id="wrapper" className="theme-dark">
       <div id="countryApp">
-        <Head>
+        <Head>          
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>Frontend Mentor | REST Countries API with color theme switcher</title>
           <link rel="icon" href="/favicon.ico" />          
         </Head>

@@ -42,7 +42,7 @@ $default-font-size: 14px;
 $detail-font-size: 16px;
 
 $default-padding: 25px;
-$default-margin: $default-padding * 2;
+$default-margin: $default-padding;
 
 // themes support
 
@@ -91,14 +91,10 @@ $themes: (
     padding: 0;
     box-sizing: border-box;
 }
-html {
-    height: 100%;
-}
 
 body {
-    display: flex;    
-    min-height: 100vh;
-    margin:0;
+    width:100%; 
+    min-height: 100vh;    
     font-family: "Nunito Sans", sans-serif;
     font-size: $default-font-size;
     text-rendering: optimizeLegibility;
@@ -108,7 +104,7 @@ body {
 }
 
 div#countryApp {
-    display: flex;
+    display: flex;        
     width: 100%;
     flex-direction: column;
     justify-content: space-between;
@@ -131,12 +127,13 @@ h1 {
 }
 
 header {
+    width:100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    height: 160px;
-    font-size: $default-font-size;
+    height: 80px;
+    font-size: 1rem;
     font-weight: 600;
     @include themed() {
         color: theme("app-text-color");
@@ -144,8 +141,8 @@ header {
     }
     //adjust later
     box-shadow: 0 3px 10px 3px rgba(0, 0, 0, .2);
-    a{
-        font-size: 1.6em;        
+    a, h1{
+        font-size: 1rem;        
     }
 }
 
@@ -163,20 +160,20 @@ header {
         color: theme("app-text-color");
         background-color: theme("element-bg-color");                
     }    
-    height: 96px;
-    padding-left: 150px;    
-    position: relative;
+    height: 48px;
+    padding-left: 75px;        
     &.search {
+        position: relative;
         &::before {
             display: flex;
             justify-content: center;            
             align-items: center;
             position: absolute;
             content: "\f002";
-            font-size: 30px;
+            font-size: 15px;
             font-family: "FontAwesome";
-            width: 150px;
-            height: 96px;
+            width: 75px;
+            height: 48px;
             top:0;
             left: 0;
         }
@@ -184,12 +181,14 @@ header {
 }
 
 input[type=text] {    
-    outline: none;
-    font-size: 1.6em;
+    outline: none;    
+    width: 100%;
+    padding: 10px 0;
+    background: transparent;        
+    border: none;  
+    font-size: 1rem;
     @include themed() {
-        color: theme("app-text-color");
-        background: transparent;        
-        border: none;        
+        color: theme("app-text-color");          
     }                
     &::placeholder {        
         @include themed() {
@@ -206,14 +205,14 @@ input[type=text] {
     border-radius: 10px;
     width: 100%;
     outline: none;
-    font-size: 1.6em;
+    font-size: 1rem;
     font-weight: 600;
     @include themed() {
         color: theme("app-text-color");
         background-color: theme("element-bg-color");                
     }    
-    height: 96px;
-    padding-left: $default-padding * 2;
+    height: 48px;
+    padding-left: $default-padding;
     position: relative;
     .header {
         width: 100%;        
@@ -240,14 +239,14 @@ input[type=text] {
         z-index: 900;
         position: absolute;
         list-style-type: none;
-        top: 105px;
+        top: 53px;
         left: 0;
         border-radius: 10px;        
         @include themed() {            
             background-color: theme("element-bg-color");                
         } 
         li {
-            padding: 10px $default-padding * 2;            
+            padding: 10px $default-padding;            
         }
     }
 }
@@ -258,7 +257,7 @@ input[type=text] {
 
 .card {
     margin-top: $default-margin;
-    max-width: 530px;
+    max-width: 280px;
     display: flex;
     flex-direction: column;
     width: 100%;    
@@ -269,7 +268,7 @@ input[type=text] {
     }
     .thumbnail {
         width: 100%;
-        height: 320px;
+        height: 200px;
         overflow: hidden;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
@@ -280,18 +279,18 @@ input[type=text] {
         }
     }
     .title {
-        font-size: 35px;
+        font-size: 1.2rem;
         font-weight: 800;
-        padding: $default-padding;
+        padding: $default-padding $default-padding 5px $default-padding;
     }
 
     .body {
-        font-size: 1.6em;
-        padding: 10px $default-padding $default-padding $default-padding;
+        font-size: 1.1rem;
+        padding: 5px $default-padding $default-padding*2 $default-padding;
         ul {
             list-style-type: none;
             li {
-                padding: 10px 0;
+                padding: 5px 0 0 0;
                 .label {
                     font-weight: 800;
                 }
