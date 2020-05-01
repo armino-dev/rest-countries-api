@@ -25,8 +25,7 @@ function Home({ countries }) {
       <div id="countryApp">
         <Head>
           <title>Frontend Mentor | REST Countries API with color theme switcher</title>
-          <link rel="icon" href="/favicon.ico" />
-          <script src="https://kit.fontawesome.com/026dd295b1.js" crossOrigin="anonymous"></script>
+          <link rel="icon" href="/favicon.ico" />          
         </Head>
         <Header />
         <main>

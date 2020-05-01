@@ -96,11 +96,9 @@ html {
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+    display: flex;    
     min-height: 100vh;
-    margin: 0;    
+    margin:0;
     font-family: "Nunito Sans", sans-serif;
     font-size: $default-font-size;
     text-rendering: optimizeLegibility;
@@ -110,7 +108,6 @@ body {
 }
 
 div#countryApp {
-    min-width: 375px;
     display: flex;
     width: 100%;
     flex-direction: column;
