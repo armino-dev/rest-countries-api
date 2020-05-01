@@ -18,8 +18,8 @@ class Card extends React.Component {
                 <div className="title">{title}</div>
                 <div className="body">
                     <ul>
-                    {list.map((item) => (
-                        <li className="item" key={item.id}><span className="label">{item.label}</span>: <span className="value">{item.value}</span></li>
+                    {list.map((item, index) => (
+                        <li className="item" key={index}><span className="label">{item.label}</span>: <span className="value">{item.value}</span></li>
                     ))}
                     </ul>
                 </div>

@@ -36,9 +36,9 @@ function Home({ countries }) {
           <DropDown className="w60 shadow" title="Filter by Region" list={regions}/>
           <div className="container">                        
             {countries.map((item) => (              
-              <Card className="shadow" title={item.name} thumbnail={"/flags/" + item.alpha2Code.toLowerCase() + ".png"} list={
+              <Card className="shadow" key={item.alpha2Code} title={item.name} thumbnail={"/flags/" + item.alpha2Code.toLowerCase() + ".png"} list={
                 [
-                  {"label": "Population", "value": item.population}, 
+                  {"label": "Population", "value": Number(item.population).toLocaleString('en')}, 
                   {"label": "Region", "value": item.region},
                   {"label": "Capital", "value": item.capital}
                 ]
@@ -54,7 +54,7 @@ function Home({ countries }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch("https://restcountries.eu/rest/v2/region/europe")
+  const res = await fetch("https://restcountries.eu/rest/v2/all")
   const countries = await res.json()
 
   return {
