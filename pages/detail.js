@@ -1,7 +1,8 @@
 import Head from 'next/head'
 
-export default function Detail() {
-    return (
+export default function Detail({data}) {
+    console.log(data)
+    return (      
       <div>
         <Head>
           <title>Frontend Mentor | REST Countries API with color theme switcher | Country detail</title>

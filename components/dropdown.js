@@ -5,7 +5,8 @@ class DropDown extends React.Component {
         super(props)
         this.state = {
             isOpen: false,
-            title: this.props.title
+            title: this.props.title,
+            selected: ''
         }
     }
 
@@ -21,6 +22,15 @@ class DropDown extends React.Component {
         }))
     }
 
+    selectItem(item) {        
+        this.setState(
+            { selected: item },
+            () => {
+                console.log(this.state.selected) 
+            }
+        )               
+    }
+
     render() {
         const { list } = this.props
         const { isOpen, title } = this.state
@@ -31,7 +41,7 @@ class DropDown extends React.Component {
                 </div>
                 {isOpen && <ul className="list">
                     {list.map((item) => (
-                        <li className="item" key={item.id}>{item.title}</li>
+                        <li className="item" key={item.id} onClick={()=>this.selectItem(item.id)}>{item.title}</li>
                     ))}
                 </ul>
                 }

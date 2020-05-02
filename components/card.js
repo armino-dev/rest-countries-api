@@ -1,20 +1,29 @@
 import React from 'react'
+import Link from 'next/link'
 
 class Card extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             thumbnail: this.props.thumbnail,
-            title: this.props.title,            
+            title: this.props.title,
+            code: this.props.id,       
         }
+        
     }
 
+    goTo(key) {
+        console.log(key)
+    }
+    
     render() {
         const { list } = this.props
-        const { thumbnail, title } = this.state
+        const { thumbnail, title, code } = this.state
+        
         return (
-            <div className={`card ${this.props.className}`}>                
-                <div className="thumbnail"><img src={thumbnail} /></div>
+            <Link href="/countries/[id].js">
+            <div className={`card ${this.props.className}`} onClick={ () => this.goTo(code) }>
+                <div className="thumbnail"><img src={thumbnail} alt={title + " flag"} /></div>
                 <div className="title">{title}</div>
                 <div className="body">
                     <ul>
@@ -24,6 +33,7 @@ class Card extends React.Component {
                     </ul>
                 </div>
             </div>
+            </Link>
         )
     }
 }
