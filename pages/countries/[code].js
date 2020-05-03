@@ -1,0 +1,108 @@
+import { useRouter } from 'next/router'
+import fetch from 'node-fetch'
+import ErrorPage from 'next/error'
+import Link from 'next/link'
+import Head from 'next/head'
+import Footer from '../../components/footer'
+import Header from '../../components/header'
+
+export default function Country({ country, neighbors }) {
+    const router = useRouter()
+
+    if (!router.isFallback && country?.code) {
+        return <ErrorPage statusCode={404} />
+    }
+
+    let languages = []
+    let currencies = []
+    for (const language of country.languages) {        
+        languages.push(language.name)
+    }
+
+    for (const currency of country.currencies) {        
+        currencies.push(currency.name)
+    }
+
+    return (
+        <div id="wrapper">
+            <div id="countryApp">
+                <Head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <title>Frontend Mentor | REST Countries API with color theme switcher | Country detail</title>
+                    <link rel="icon" href="/favicon.ico" />
+                </Head>
+                <Header />
+                <main>                    
+                    <div className="country-detail container">
+                        <div className="col">
+                            <Link href="/">
+                                <a className="btn shadow"><i className="fa fa-long-arrow-left"></i> Back</a>
+                            </Link>                            
+                            <img className="shadow" src={country.flag} alt={country.name + " flag"} />
+                        </div>
+                        <div className="col">
+                            <h1>{router.isFallback ? "Please wait, we are loading the data..." : country.name}</h1>
+                            
+                                <ul>
+                                    <li><strong>Native name:</strong> {country.nativeName}</li>
+                                    <li><strong>Population:</strong> {country.population}</li>
+                                    <li><strong>Region:</strong> {country.region}</li>
+                                    <li><strong>Sub Region:</strong> {country.subregion}</li>
+                                    <li><strong>Capital:</strong> {country.capital}</li>
+                                </ul>
+                                <ul>
+                                    <li><strong>Top Level Domain:</strong> {country.topLevelDomain}</li>
+                                    <li><strong>Currencies:</strong> {currencies.join(", ")}</li>
+                                    <li><strong>Languages:</strong> {languages.join(", ")}</li>
+                                </ul>                                
+                            
+                            
+                                <h2>Border Countries: </h2>
+                                <div className="buttons-container">
+                                {neighbors.map((neighbor, index) => {
+                                    const code = neighbor.alpha2Code.toLowerCase()
+                                    return (
+                                        <Link key={index} as={`/countries/${code}`} href="/countries/[code]">
+                                            <a className="btn shadow">{neighbor.name}</a>
+                                        </Link>
+                                    )
+                                })}
+                                </div>
+                            
+                        </div>                        
+                    </div>                    
+                </main>
+                <Footer />
+            </div>
+        </div>
+    )
+}
+
+export async function getStaticProps({ params }) {
+    const res = await fetch("https://restcountries.eu/rest/v2/alpha/" + params.code)
+    const country = await res.json()
+    
+    let query = [];    
+    for (const neighbor of country.borders) {
+        query.push(neighbor)
+    }
+    const resN = await fetch("https://restcountries.eu/rest/v2/alpha?codes=" + query.join(";"))
+    const neighbors = await resN.json()
+    
+    return {
+        props: {
+            country,
+            neighbors
+        }
+    }
+}
+
+export async function getStaticPaths() {
+    const res = await fetch("https://restcountries.eu/rest/v2/all")
+    const countries = await res.json()
+
+    return {
+        paths: countries?.map(country => `/countries/${country.alpha2Code.toLowerCase()}`) || [],
+        fallback: true,
+    }
+}
