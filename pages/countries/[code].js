@@ -42,7 +42,7 @@ export default function Country({ country, neighbors }) {
                         </div>
                         <div className="col">
                             <h1>{router.isFallback ? "Please wait, we are loading the data..." : country.name}</h1>
-                            
+                            <div className="container">
                                 <ul>
                                     <li><strong>Native name:</strong> {country.nativeName}</li>
                                     <li><strong>Population:</strong> {country.population}</li>
@@ -55,7 +55,7 @@ export default function Country({ country, neighbors }) {
                                     <li><strong>Currencies:</strong> {currencies.join(", ")}</li>
                                     <li><strong>Languages:</strong> {languages.join(", ")}</li>
                                 </ul>                                
-                            
+                            </div>
                             
                                 <h2>Border Countries: </h2>
                                 <div className="buttons-container">
