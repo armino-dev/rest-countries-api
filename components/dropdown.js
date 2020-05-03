@@ -1,12 +1,10 @@
-import React from 'react'
-
-class DropDown extends React.Component {
+export default class DropDown extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             isOpen: false,
-            title: this.props.title,
-            selected: ''
+            title: this.props.title,            
+            selected: this.props.selected,            
         }
     }
 
@@ -33,15 +31,19 @@ class DropDown extends React.Component {
 
     render() {
         const { list } = this.props
-        const { isOpen, title } = this.state
+        const { isOpen, title, selected } = this.state
         return (
-            <div className={`dropdown ${this.props.className}`} tabIndex="0" onBlur={() => this.hide()}>
+            <div className={`dropdown ${this.props.className}`} tabIndex="0" /*onBlur={() => this.hide()}*/>
                 <div className="header" onClick={() => this.toggleList()}>
                     <div className={"title " + (isOpen ? "open" : "")}>{title}</div>                                
                 </div>
                 {isOpen && <ul className="list">
                     {list.map((item) => (
-                        <li className="item" key={item.id} onClick={()=>this.selectItem(item.id)}>{item.title}</li>
+                        <li 
+                            className={"item" + (item.selected ? "selected" : "")} 
+                            key={item.id} 
+                            onClick={()=>this.selectItem(item.id)}>{item.title}
+                        </li>
                     ))}
                 </ul>
                 }
@@ -49,5 +51,3 @@ class DropDown extends React.Component {
         )
     }
 }
-
-export default DropDown

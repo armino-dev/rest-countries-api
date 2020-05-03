@@ -11,18 +11,13 @@ class Card extends React.Component {
         }
         
     }
-
-    goTo(key) {
-        console.log(key)
-    }
     
     render() {
         const { list } = this.props
-        const { thumbnail, title, code } = this.state
-        
+        const { thumbnail, title, code } = this.state        
         return (
-            <Link href="/countries/[id].js">
-            <div className={`card ${this.props.className}`} onClick={ () => this.goTo(code) }>
+            <Link as={`/countries/${code}`} href="/countries/[code]">
+            <div className={`card ${this.props.className}`} >
                 <div className="thumbnail"><img src={thumbnail} alt={title + " flag"} /></div>
                 <div className="title">{title}</div>
                 <div className="body">

@@ -35,6 +35,7 @@ $blue-dark-one: hsl(207, 26%, 17%);
 $blue-dark-two: hsl(200, 15%, 8%);
 $gray-dark: hsl(0, 0%, 52%);
 $gray-very-light: hsl(0, 0%, 98%);
+$green: rgb(100, 200, 120);
 $white: hsl(0, 0%, 100%);
 
 // other
@@ -119,6 +120,9 @@ a {
     padding: $default-padding;
     @include themed() {
         color: theme("app-text-color");
+    }
+    &:hover {        
+        color: $green;
     }
 }
 
@@ -257,7 +261,7 @@ input[type=text] {
 
 .card {
     margin-top: $default-margin;
-    max-width: 280px;
+    max-width: 265px;
     display: flex;
     flex-direction: column;
     width: 100%;    
@@ -268,14 +272,15 @@ input[type=text] {
     }
     .thumbnail {
         width: 100%;
-        height: 200px;
+        height: 162px;
         overflow: hidden;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         position: relative;
         img {
-            position: absolute;
+            position: absolute;            
             width: 100%;
+            height: 162px;
         }
     }
     .title {
@@ -302,8 +307,6 @@ input[type=text] {
 .container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 100%;
 }
 
@@ -314,6 +317,63 @@ main {
 
 footer {
     padding: $default-padding;
+}
+
+.country-detail {    
+    padding-top: 20px;
+    font-size: 1.1rem;
+    @include themed() {
+        color: theme("app-text-color");
+    }    
+    img {
+        margin-top: 25px;
+        width: 100%;        
+        border-radius: 5px;
+    }
+    h1 {
+        width: 100%;
+        padding-left:0;
+    }
+    h2 {
+        width: 100%;
+        margin-top: 25px;
+        margin-bottom: 25px;
+    }
+    ul {
+        list-style-type: none;
+        li {
+            width: 100%;
+            padding: 10px 0;
+        }
+    }    
+    .btn {        
+        @include themed() {
+            background-color: theme("element-bg-color");
+        }
+        display: flex;
+        align-items: center;
+        justify-content: center;        
+        width: 105px;
+        height: 30px;
+        margin: 25px 25px 0 0;
+        border-radius: 5px;
+    }
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.buttons-container {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    .btn {
+        min-width: 105px;
+        width: auto;
+    }
 }
 
 .attribution {
@@ -330,19 +390,31 @@ footer {
     }
 }
 
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.items-center {
+    align-items: center;
+}
 
 
 @media only screen and (min-width: 768px) {
     .container {
         max-width: 1400px;
         flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
+        flex-wrap: wrap;                    
         margin: 0 auto;        
         .card {
             margin-right: 20px;
             height: 350px;
+        }
+        .input-container, .dropdown {
+            width: 45%;
         }
     }
    
