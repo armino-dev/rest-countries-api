@@ -6,12 +6,29 @@ import Head from 'next/head'
 import Footer from '../../components/footer'
 import Header from '../../components/header'
 
-export default function Country({ code, country, neighbors }) {
+export default function Country({ country, neighbors }) {
     const router = useRouter()
 
-    if (!router.isFallback && !code) {
+    if (!router.isFallback && !country) {
         return <ErrorPage statusCode={404} />
     }
+    
+
+    let currencies = [];
+    let languages = [];
+    
+
+    if (country) {
+        for (const currency of country.currencies) {        
+            currencies.push(currency.name)
+        }    
+        for (const language of country.languages) {        
+            languages.push(language.name)
+        }                 
+    }
+        
+    
+
 
     return (
         <div id="wrapper">
@@ -38,46 +55,28 @@ export default function Country({ code, country, neighbors }) {
                                 <div className="container">
                                     <ul>
                                         <li><strong>Native name:</strong> {country.nativeName}</li>
-                                        <li><strong>Population:</strong> {country.population}</li>
+                                        <li><strong>Population:</strong> {Number(country.population).toLocaleString('en')}</li>
                                         <li><strong>Region:</strong> {country.region}</li>
                                         <li><strong>Sub Region:</strong> {country.subregion}</li>
                                         <li><strong>Capital:</strong> {country.capital}</li>
                                     </ul>
                                     <ul>
                                         <li><strong>Top Level Domain:</strong> {country.topLevelDomain}</li>
-                                        <li>
-                                            <strong>Currencies:</strong> 
-                                            { () => {
-                                                let currencies = [];
-                                                for (const currency of country.currencies) {        
-                                                    currencies.push(currency.name)
-                                                }
-                                                return currencies.join(", ")
-                                            }}
-                                        </li>
-                                        <li>
-                                            <strong>Languages:</strong> 
-                                            { () => {
-                                            let languages = [];
-                                            for (const language of country.languages) {        
-                                                languages.push(language.name)
-                                            } 
-                                            return languages.join(", ")
-                                            }}
-                                        </li>
+                                        <li><strong>Currencies:</strong> { currencies.join(", ") }</li>
+                                        <li><strong>Languages:</strong> { languages.join(", ") }</li>
                                     </ul>                                
                                 </div>
                                 
                                     <h2>Border Countries: </h2>
                                     <div className="buttons-container">
-                                    {/*neighbors.map((neighbor, index) => {
+                                    {neighbors.map((neighbor, index) => {
                                         const code = neighbor.alpha2Code.toLowerCase()
                                         return (
                                             <Link key={index} as={`/countries/${code}`} href="/countries/[code]">
                                                 <a className="btn shadow">{neighbor.name}</a>
                                             </Link>
                                         )
-                                    })*/}
+                                    })}
                                     </div>
                                 
                             </div>                        
@@ -91,6 +90,17 @@ export default function Country({ code, country, neighbors }) {
     )
 }
 
+export async function getStaticPaths() {
+    const res = await fetch("https://restcountries.eu/rest/v2/all")
+    const countries = await res.json()
+
+    return {
+        paths: countries.map(country => `/countries/${country.alpha2Code.toLowerCase()}`) || [],
+        fallback: false,
+    }
+}
+
+
 export async function getStaticProps({ params }) {
     
     const res = await fetch("https://restcountries.eu/rest/v2/alpha/" + params.code)
@@ -101,23 +111,17 @@ export async function getStaticProps({ params }) {
         query.push(neighbor)
     }
     const resN = await fetch("https://restcountries.eu/rest/v2/alpha?codes=" + query.join(";"))
-    const neighbors = await resN.json()
-    
+    const data = await resN.json()
+    let neighbors = [];
+    if (data.length > 0) {
+        for (let neighbor of data) {
+            neighbors.push({parent: params.code, alpha2Code: neighbor.alpha2Code, name: neighbor.name })
+        }
+    }            
     return {
-        props: {
-            code: country.alpha2Code.toLowerCase(),
-            country: country,
-            neighbors: neighbors
+        props: {            
+            country, 
+            neighbors,            
         },
-    }
-}
-
-export async function getStaticPaths() {
-    const res = await fetch("https://restcountries.eu/rest/v2/all")
-    const countries = await res.json()
-
-    return {
-        paths: countries?.map(country => `/countries/${country.alpha2Code.toLowerCase()}`) || [],        
-        fallback: true,
     }
 }
