@@ -17,22 +17,13 @@ export default class DropDown extends React.Component {
         const {list} = this.props        
         const isOpen = this.state.isOpen
         setTimeout( () => {
-            if (isOpen) {
-                window.addEventListener("click", this.hide);
-            } else {
-                window.removeEventListener("click", this.hide);
-                const selectedItem = list.filter((item) => item.selected);
-                if (!selectedItem.length) {
-                    this.setState({ title: this.props.title})
-                }
-            }
+            const selectedItem = list.filter((item) => item.selected);
+            if (!selectedItem.length) {
+                this.setState({ title: this.props.title})
+            }            
         }, 0);
     }
-
-    componentWillUnmount() {
-        window.removeEventListener("click", this.hide)
-    }
-
+    
     hide() {
         this.setState({
             isOpen: false
@@ -59,7 +50,7 @@ export default class DropDown extends React.Component {
         const { list } = this.props        
         const { isOpen, title } = this.state
         return (
-            <div className={`dropdown ${this.props.className}`} tabIndex="0" /*onBlur={() => this.hide()}*/>
+            <div className={`dropdown ${this.props.className}`} tabIndex="0" onBlur={() => this.hide()}>
                 <div className="header" onClick={() => this.toggleList()}>
                     <div className={"title " + (isOpen ? "open" : "")}>{title}</div>                                
                 </div>

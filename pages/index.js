@@ -82,7 +82,7 @@ export default class Index extends React.Component {
                 list={region}
                 toggleItem={this.toggleItem} />
             </div>
-            <div className="container justify-center items-center">
+            {filteredCountries && (<div className="container justify-center items-center">
               {filteredCountries.map((item) => {
                 const key = item.alpha2Code.toLowerCase()
                 const population = Number(item.population).toLocaleString('en')
@@ -105,7 +105,7 @@ export default class Index extends React.Component {
                     } />
                 )
               })}
-            </div>
+            </div>) }
           </main>
           <Footer />
         </div>
