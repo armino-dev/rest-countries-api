@@ -246,13 +246,34 @@ input[type=text] {
         list-style-type: none;
         top: 53px;
         left: 0;
+        user-select: none;
         border-radius: 10px;        
         @include themed() {            
             background-color: theme("element-bg-color");                
         } 
         li {
-            padding: 10px $default-padding;            
-        }
+            padding: 10px $default-padding;                        
+            &.selected, &:hover {
+                position: relative;
+                &::after {
+                    position: absolute;
+                    content: "\f00c";
+                    font-family: "FontAwesome";
+                    right: $default-padding;
+                }                
+            }
+            &:hover {
+                @include themed() {            
+                    background-color: rgba(theme("element-bg-hover"), .1); 
+                } 
+            }
+            &.selected:hover::after {
+                @include themed() {            
+                    color: theme("element-bg-color");                
+                } 
+            }
+            
+        }        
     }
 }
 

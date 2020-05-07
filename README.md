@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app).
 
-<img style="-webkit-user-select: none;margin: auto;cursor: zoom-in;" src="blob:https://vercel.com/ebe44b23-a931-4690-99da-6febbfce93cf" width="1033" height="645" alt="Design preview for REST Countries API with theme switcher Frontend Mentor challenge">
+
 
 ## Getting Started
 

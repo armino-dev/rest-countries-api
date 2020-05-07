@@ -4,7 +4,7 @@ import Header from '../components/header'
 import DropDown from '../components/dropdown'
 import Card from '../components/card'
 import fetch from 'node-fetch'
-import { useState } from 'react'
+//import { useState } from 'react'
 
 
 export default class Index extends React.Component {
@@ -12,26 +12,56 @@ export default class Index extends React.Component {
     super(props)
     this.state = {
       countries: this.props.countries,
-      regions: [
-        { id: 'Africa', title: 'Africa', selected: false, key: 'region' },
-        { id: 'America', title: 'America', selected: false, key: 'region' },
-        { id: 'Asia', title: 'Asia', selected: false, key: 'region' },
-        { id: 'Europe', title: 'Europe', selected: false, key: 'region' },
-        { id: 'Oceania', title: 'Oceania', selected: false, key: 'region' },
-      ]
+      region: [
+        { id: 0, title: 'Africa', selected: false, key: 'region' },
+        { id: 1, title: 'Americas', selected: false, key: 'region' },
+        { id: 2, title: 'Asia', selected: false, key: 'region' },
+        { id: 3, title: 'Europe', selected: false, key: 'region' },
+        { id: 4, title: 'Oceania', selected: false, key: 'region' },
+      ],
+      regionFilter: "",
+      countryFilter: "",
     }
+    this.toggleItem = this.toggleItem.bind(this)
   }
 
-
-  dropdownSelect(id, key) {
-    //let temp = this.state[key]
-    let temp = JSON.parse(JSON.stringify(this.state[key]))
-    temp[id].selected = !temp[id].selected
-    this.setState({ [key]: temp })
+  toggleItem(id, key) {
+    //let temp = JSON.parse(JSON.stringify(this.state[key]))
+    let temp = this.state[key]
+    temp.forEach(item => {
+      if (item.id == id) {
+        item.selected = !item.selected
+      } else {
+        item.selected = false
+      }
+    })
+    const selectedItem = temp.filter((item) => item.selected);
+    let filter;
+    
+    if (selectedItem.length) {
+      filter = selectedItem[0].title
+    } else {
+      filter = ""
+    }
+    
+    this.setState({
+      [key]: temp,
+      regionFilter: filter      
+    })
   }
 
   render() {
-    const { countries, regions } = this.state
+    const { countries, region, regionFilter, countryFilter } = this.state
+    let filteredCountries;
+    const allowedValues = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
+    if (allowedValues.includes(regionFilter)) {
+      filteredCountries = countries.filter((country) => {
+        return country.region == regionFilter
+      })
+    } else {
+      filteredCountries = countries
+    }
+
     return (
       <div id="wrapper">
         <div id="countryApp">
@@ -46,23 +76,33 @@ export default class Index extends React.Component {
               <div className="input-container search shadow">
                 <input type="text" name="search" placeholder="Search for a country..." />
               </div>
-              <DropDown className="w60 shadow" title="Filter by Region" list={regions} toggleItem={this.dropdownSelect} />
+              <DropDown
+                className="w60 shadow"
+                title="Filter by Region"
+                list={region}
+                toggleItem={this.toggleItem} />
             </div>
             <div className="container justify-center items-center">
-              {countries.map((item) => {
+              {filteredCountries.map((item) => {
                 const key = item.alpha2Code.toLowerCase()
                 const population = Number(item.population).toLocaleString('en')
                 const region = item.region
                 const capital = item.capital
                 const thumbnail = item.flag
                 return (
-                  <Card className="shadow" key={key} id={key} title={item.name} thumbnail={thumbnail} list={
-                    [
-                      { "label": "Population", "value": population },
-                      { "label": "Region", "value": region },
-                      { "label": "Capital", "value": capital }
-                    ]
-                  } />
+                  <Card
+                    className="shadow"
+                    key={key}
+                    id={key}
+                    title={item.name}
+                    thumbnail={thumbnail}
+                    list={
+                      [
+                        { "label": "Population", "value": population },
+                        { "label": "Region", "value": region },
+                        { "label": "Capital", "value": capital }
+                      ]
+                    } />
                 )
               })}
             </div>
@@ -75,22 +115,11 @@ export default class Index extends React.Component {
 
 }
 
-export async function getStaticProps({ filter }) {
+export async function getStaticProps() {
   const res = await fetch("https://restcountries.eu/rest/v2/all")
   const countries = await res.json()
-  const allowedValues = ['Africa', 'America', 'Asia', 'Europe', 'Oceania']
-  let result;
-
-  if (allowedValues.includes(filter)) {
-    result = await countries.filter((country) => {
-      console.log(country)
-      return country.region == filter
-    })
-  } else {
-    result = countries
-  }
-
+  
   return {
-    props: { countries: result }
+    props: { countries }
   }
 }
