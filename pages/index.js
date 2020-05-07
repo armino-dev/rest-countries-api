@@ -23,6 +23,7 @@ export default class Index extends React.Component {
       countryFilter: "",
     }
     this.toggleItem = this.toggleItem.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   toggleItem(id, key) {
@@ -50,8 +51,12 @@ export default class Index extends React.Component {
     })
   }
 
+  handleChange(e) {
+    this.setState({ countryFilter: e.target.value })
+  }
+
   render() {
-    const { countries, region, regionFilter, countryFilter } = this.state
+    const { countries, region, regionFilter } = this.state
     let filteredCountries;
     const allowedValues = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
     if (allowedValues.includes(regionFilter)) {
@@ -60,6 +65,13 @@ export default class Index extends React.Component {
       })
     } else {
       filteredCountries = countries
+    }
+
+    const countryFilter = this.state.countryFilter.trim().toLowerCase()
+    if (countryFilter.length > 0) {
+      filteredCountries = filteredCountries.filter((country) => {
+        return country.name.toLowerCase().match(countryFilter)
+      })
     }
 
     return (
@@ -74,7 +86,13 @@ export default class Index extends React.Component {
           <main>
             <div className="container justify-between">
               <div className="input-container search shadow">
-                <input type="text" name="search" placeholder="Search for a country..." />
+                <input 
+                  type="text" 
+                  aria-label="country-search" 
+                  name="country-search" 
+                  placeholder="Search for a country..." 
+                  value={countryFilter}
+                  onChange={this.handleChange}/>
               </div>
               <DropDown
                 className="w60 shadow"
