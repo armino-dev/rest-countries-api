@@ -84,7 +84,7 @@ export default class Index extends React.Component {
           </Head>
           <Header />
           <main>
-            <div className="container justify-between">
+            <div className="container justify-between" id="control-container">
               <div className="input-container search shadow">
                 <input 
                   type="text" 
@@ -100,7 +100,7 @@ export default class Index extends React.Component {
                 list={region}
                 toggleItem={this.toggleItem} />
             </div>
-            {filteredCountries && (<div className="container justify-center items-center">
+            {filteredCountries && (<div className="container justify-between items-center">
               {filteredCountries.map((item) => {
                 const key = item.alpha2Code.toLowerCase()
                 const population = Number(item.population).toLocaleString('en')
