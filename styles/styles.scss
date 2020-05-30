@@ -398,6 +398,7 @@ footer {
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding: 0 25px;    
 }
 
 .buttons-container {
@@ -410,13 +411,14 @@ footer {
     }
 }
 
-.attribution {
+.attribution {    
     margin-top: 20px;
     font-size: 11px;
-    text-align: center;
+    text-align: center;    
     a {
         color: hsl(228, 45%, 44%);
         text-decoration: none;
+        padding: 0;
         font-weight: 700;
         &:hover {
             color: hsl(228, 12%, 44%);
