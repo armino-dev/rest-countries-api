@@ -16,7 +16,7 @@ export default class Card extends React.Component {
         const { list } = this.props
         const { thumbnail, title, code } = this.state
         return (
-            <Link as={`/countries/${code}`} href="/countries/[code]">
+            <Link as={`/countries/${code}`} rel="prefetch" href="/countries/[code]">
                 <div className={`card ${this.props.className}`} >
                     <div className="thumbnail">
                         <img src={thumbnail} alt={title + " flag"} />

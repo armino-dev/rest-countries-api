@@ -39,7 +39,13 @@ export default class Header extends React.Component {
         return (
             <header>
                 <h1>Where in the world?</h1>
-        <a href="#" className="btn btnToggleTheme" onClick={() => this.toggleTheme()}><i className={`fa ${buttonIcon}`}></i> {buttonText}</a>
+                <a 
+                    href="#" 
+                    rel="prefetch"
+                    className="btn btnToggleTheme" 
+                    onClick={() => this.toggleTheme()}>
+                        <i className={`fa ${buttonIcon}`}></i> {buttonText}
+                </a>
             </header>
         )
     }    
