@@ -72,7 +72,7 @@ export default function Country({ country, neighbors }) {
                                     {neighbors.map((neighbor, index) => {
                                         const code = neighbor.alpha2Code.toLowerCase()
                                         return (
-                                            <Link key={index} as={`/countries/${code}`} href="/countries/[code]">
+                                            <Link key={index} rel="prefetch" as={`/countries/${code}`} href="/countries/[code]">
                                                 <a className="btn shadow">{neighbor.name}</a>
                                             </Link>
                                         )
