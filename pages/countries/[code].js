@@ -14,22 +14,19 @@ export default function Country({ country, neighbors }) {
     }
     
 
-    let currencies = [];
-    let languages = [];
+    let currencies = []
+    let languages = []
     
 
     if (country) {
-        for (const currency of country.currencies) {        
-            currencies.push(currency.name)
+        for (const currency in country.currencies || []) {        
+            currencies.push(country.currencies[currency].name)
         }    
-        for (const language of country.languages) {        
-            languages.push(language.name)
+        for (const language in country.languages || []) {        
+            languages.push(country.languages[language])
         }                 
     }
         
-    
-
-
     return (
         <div id="wrapper">
             <div id="countryApp">
@@ -48,20 +45,20 @@ export default function Country({ country, neighbors }) {
                                 <Link href="/">
                                     <a className="btn shadow"><i className="fa fa-long-arrow-left"></i> Back</a>
                                 </Link>                            
-                                <img className="shadow" src={country.flag} alt={country.name + " flag"} />
+                                <img className="shadow" src={country.flags.png} alt={country.name.official + " flag"} />
                             </div>
                             <div className="col">
-                                <h1>{ country.name }</h1>
+                                <h1>{ country.name.official }</h1>
                                 <div className="container">
                                     <ul>
-                                        <li><strong>Native name:</strong> {country.nativeName}</li>
+                                        <li><strong>Official name:</strong> {country.name.official}</li>
                                         <li><strong>Population:</strong> {Number(country.population).toLocaleString('en')}</li>
                                         <li><strong>Region:</strong> {country.region}</li>
                                         <li><strong>Sub Region:</strong> {country.subregion}</li>
                                         <li><strong>Capital:</strong> {country.capital}</li>
                                     </ul>
                                     <ul>
-                                        <li><strong>Top Level Domain:</strong> {country.topLevelDomain}</li>
+                                        <li><strong>Top Level Domain:</strong> {country.tld ? country.tld[0] : 'n/a'}</li>
                                         <li><strong>Currencies:</strong> { currencies.join(", ") }</li>
                                         <li><strong>Languages:</strong> { languages.join(", ") }</li>
                                     </ul>                                
@@ -70,10 +67,10 @@ export default function Country({ country, neighbors }) {
                                     <h2>Border Countries: </h2>
                                     <div className="buttons-container">
                                     {neighbors.map((neighbor, index) => {
-                                        const code = neighbor.alpha2Code.toLowerCase()
+                                        const code = neighbor.cca2.toLowerCase()
                                         return (
                                             <Link key={index} rel="prefetch" as={`/countries/${code}`} href="/countries/[code]">
-                                                <a className="btn shadow">{neighbor.name}</a>
+                                                <a className="btn shadow">{neighbor.name.official}</a>
                                             </Link>
                                         )
                                     })}
@@ -91,11 +88,11 @@ export default function Country({ country, neighbors }) {
 }
 
 export async function getStaticPaths() {
-    const res = await fetch("https://restcountries.eu/rest/v2/all")
+    const res = await fetch("https://restcountries.com/v3.1/all")
     const countries = await res.json()
 
     return {
-        paths: countries.map(country => `/countries/${country.alpha2Code.toLowerCase()}`) || [],
+        paths: countries.map(country => `/countries/${country.cca2.toLowerCase()}`) || [],
         fallback: false,
     }
 }
@@ -103,19 +100,19 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
     
-    const res = await fetch("https://restcountries.eu/rest/v2/alpha/" + params.code)
-    const country = await res.json()
+    const res = await fetch("https://restcountries.com/v3.1/alpha/" + params.code)
+    const country = (await res.json())[0]
     
     let query = [];    
-    for (const neighbor of country.borders) {
+    for (const neighbor of country.borders || []) {
         query.push(neighbor)
     }
-    const resN = await fetch("https://restcountries.eu/rest/v2/alpha?codes=" + query.join(";"))
+    const resN = await fetch("https://restcountries.com/v3.1/alpha/?codes=" + query.join(";"))
     const data = await resN.json()
     let neighbors = [];
     if (data.length > 0) {
         for (let neighbor of data) {
-            neighbors.push({parent: params.code, alpha2Code: neighbor.alpha2Code, name: neighbor.name })
+            neighbors.push({ parent: params.code, cca2: neighbor.cca2, name: {official: neighbor.name.official} })
         }
     }            
     return {
