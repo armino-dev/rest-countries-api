@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import fetch from 'node-fetch'
 import ErrorPage from 'next/error'
 import Link from 'next/link'
 import Head from 'next/head'
