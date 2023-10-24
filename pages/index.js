@@ -4,9 +4,6 @@ import Footer from '../components/footer'
 import Header from '../components/header'
 import DropDown from '../components/dropdown'
 import Card from '../components/card'
-import fetch from 'node-fetch'
-//import { useState } from 'react'
-
 
 export default class Index extends React.Component {
     constructor(props) {
